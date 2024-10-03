@@ -1,4 +1,4 @@
-console.log("testinggg")
+
 
 
 //  time function
@@ -24,14 +24,37 @@ const loadData = async() => {
    }
     
 }
+
+//  catagories function for btn
+const displaycategore = (id) => {
+   
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
+    .then(res => res.json())
+    .then(data =>{
+        const activebtn = document.getElementById(`btn-${id}`)
+        removeActivebtn()
+       
+        activebtn.classList.add("bg-red-400","text-white")
+      
+        displayVideos(data.category)
+
+    } )
+    .catch(err => console.log("ERROR:",err))
+}
+const removeActivebtn =() => {
+    const removebtn = document.getElementsByClassName('btndactive')
+    for (let btn of removebtn){
+        btn.classList.remove("bg-red-400","text-white")
+    }
+}
 const displayData = (categories) => {
     const categoriesID = document.getElementById('catagories-id')
    categories.forEach(item =>{
     
-    const btn = document.createElement('button')
-    btn.classList.add('btn')
-    btn.innerText = item.category
-    categoriesID.append(btn)
+    const btncontainer = document.createElement('div')
+    
+    btncontainer.innerHTML = `<button id="btn-${item.category_id}" onclick="displaycategore(${item.category_id})" class="btn btndactive">${item.category} </button>`
+    categoriesID.append(btncontainer)
    })
     
    
@@ -52,9 +75,27 @@ const loadvideos = async() =>{
 
 const displayVideos = (videos) =>{
     const videosid = document.getElementById("videos")
+    videosid.innerHTML =""
+    if(videos.length ===0){
+        videosid.classList.remove("grid")
+        videosid.innerHTML =`<div class="h-screen flex flex-col justify-center items-center gap-5"> 
+        <img src="./asset/icon.png">
+          <h2 class="text-center font-bold text-xl">
+          Oops!! Sorry, There is no content here
+          <h2>
+        
+        </div>`
+        return
+
+    }
+    else{
+        videosid.classList.add("grid")
+
+    }
+
     
     videos.forEach(video =>{
-        console.log(video)
+       
         const card = document.createElement("div")
         card.classList.add("card","card-compact")
         card.innerHTML = `
