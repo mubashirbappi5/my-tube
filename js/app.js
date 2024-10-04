@@ -81,16 +81,17 @@ const dispayDetails = (video) => {
 }
 //  video part
 
-const loadvideos = async() =>{
-    try{
-        const res = await fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
-    const data = await res.json()
-    displayVideos(data.videos)
+const loadvideos = (searchText="") =>{
+    
+        fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
+        .then(res => res.json())
+        .then(data=> displayVideos(data.videos) )
+        .catch(error => console.log(error));
+    
    
-    }
-    catch(err){
-        console.log("ERROR:",err)
-    }
+   
+    
+    
 }
 
 const displayVideos = (videos) =>{
@@ -167,6 +168,14 @@ const displayVideos = (videos) =>{
     
 })
 }
+document.getElementById('searchid').addEventListener("keyup",function(e){
+    console.log(e.target.value)
+   
+    loadvideos(e.target.value)
+})
+document.getElementById("searchid2").addEventListener("keyup",function(e){
+    loadvideos(e.target.value)
+})
 
 
 
