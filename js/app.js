@@ -59,6 +59,26 @@ const displayData = (categories) => {
     
    
 }
+// load details
+const loadDetails = (videoid) =>{
+    console.log(videoid)
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/video/${videoid}`)
+    .then(res => res.json())
+    .then(data => dispayDetails(data.video))
+
+}
+// dispay details
+const dispayDetails = (video) => {
+    console.log(video)
+    const modalitem = document.getElementById('modalItem')
+    modalitem.innerHTML = `
+    <img src="${video.thumbnail}">
+    <h2 class="font-bold text-lg">${video.title} </h2>
+    <p>${video.description} </p>
+    
+    `
+    document.getElementById('showmodalData').click()
+}
 //  video part
 
 const loadvideos = async() =>{
@@ -115,7 +135,7 @@ const displayVideos = (videos) =>{
       alt="profile">
  <div>
      <div>
-         <h2 class="font-bold text-2xl">${video.title} </h2>
+         <h2 class="font-bold text-xl">${video.title} </h2>
      </div>
 
      <div class="flex gap-2">
@@ -123,7 +143,9 @@ const displayVideos = (videos) =>{
             ${video.authors[0].verified === true ? ' <img class="w-5" src="https://img.icons8.com/?size=100&id=2AuMnRFVB9b1&format=png&color=000000">': ""}
      </div>
     <p class="text-gray-400">${video.others.views}</p>
+    <button onclick="loadDetails('${video.video_id}')" class="btn btn-sm mt-2 btn-error text-white">detailes</button>
 </div>
+
  
 
 
